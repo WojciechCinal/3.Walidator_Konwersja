@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/page-template.xhtml">
+
+	<ui:define name="pageContent">
+		<p:panel header="Kalkulator kredytowy">
+
+			<h:message id="msg" />
+
+			<h:form id="formularz">
+				<h:panelGrid columns="3">
+					<h:outputLabel for="kwota" value="Kwota: " />
+					<p:inputText id="kwota" value="#{kalkulatorBB.kwota}"
+						required="true" requiredMessage="Brak kwoty kredytu!" validatorMessage="Kwota powinna wynosić 100-100.000.000!" 
+						converterMessage="Niepoprawna wartość kwoty kredytu! Powinna być całkowita!">
+					<f:convertNumber maxFractionDigits="0" />
+						<f:validateDoubleRange minimum="100" maximum="100000000" />
+		            </p:inputText>
+					<p:message for="kwota" />
+					
+
+					<h:outputLabel for="oprocentowanie" value="Oprocentowanie: " />
+					<p:inputText id="oprocentowanie" value="#{kalkulatorBB.oprocentowanie}" 
+						required="true" requiredMessage="Nie podano oprocentowania!"
+						validatorMessage="Kwota powinna wynosić 0,1-100!" converterMessage="Niepoprawna wartość oprocentowania!">
+					<f:convertNumber maxFractionDigits="0" />
+						<f:validateDoubleRange minimum="0.1" maximum="100.0" />
+		            </p:inputText>
+					<p:message for="oprocentowanie" />
+
+					<h:outputLabel for="czas" value="Czas spłaty kredytu: " />
+					<p:selectOneMenu id="czas" value="#{kalkulatorBB.czas}">
+						<f:selectItem itemValue="6" itemLabel="6 miesięcy" />
+						<f:selectItem itemValue="12" itemLabel="12 miesięcy" />
+						<f:selectItem itemValue="24" itemLabel="2 lata" />
+						<f:selectItem itemValue="36" itemLabel="3 lata" />
+						<f:selectItem itemValue="60" itemLabel="5 lat" />
+						<f:selectItem itemValue="120" itemLabel="10 lat" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<p:messages id="msg" />
+
+				<p:commandButton value="Oblicz ratę"
+					action="#{kalkulatorBB.obliczRata()}" update="@form" />
+
+				<p:commandButton value="Oblicz ratę (AJAX)" action="#{kalkulatorBB.obliczRataAJAX()}" update="msg" />
+				
+				<br />
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>
+</html>
